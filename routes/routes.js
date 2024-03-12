@@ -11,6 +11,7 @@ import {
 } from "../middleware/fileUpload.middleware.js";
 import { validateToken } from "../middleware/validateTokenHandler.js";
 import {
+    deleteFile,
     generateLink,
     getMyFiles,
     saveFile,
@@ -22,5 +23,6 @@ router.post("/users/login", loginUser);
 router.put("/users/logout", validateToken, logout);
 router.post("/upload", validateToken, saveFile);
 router.get("/files/get-files", validateToken, getMyFiles);
+router.delete("/delete-file", validateToken, deleteFile);
 router.post("/generate-link", generateLink);
 export default router;

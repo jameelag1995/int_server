@@ -43,3 +43,21 @@ export const saveFile = async (req, res, next) => {
         next(error);
     }
 };
+
+export const deleteFile = async (req, res, next) => {
+    try {
+        const file = await FileModel.findById(req.body.fileId);
+        if (!file) {
+            res.status(404);
+            throw new Error("No such file");
+        }
+        if (file.owner.toString() !== req.user.id) {
+            res.status(401);
+            throw new Error("User is not the owner of this file");
+        }
+        const deletedFile = await FileModel.deleteOne({ _id: req.body.fileId });
+        res.status(200).send(deletedFile);
+    } catch (error) {
+        next(error);
+    }
+};
