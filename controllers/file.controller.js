@@ -27,7 +27,18 @@ export const getMyFiles = async (req, res, next) => {
         if (myFiles.length === 0) {
             throw new Error("No files in database");
         }
-        res.send(myFiles);
+        res.status(200).send({ myFiles });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const saveFile = async (req, res, next) => {
+    try {
+        const file = new FileModel(req.body);
+        file.owner = req.user.id;
+        await file.save();
+        res.send(file);
     } catch (error) {
         next(error);
     }

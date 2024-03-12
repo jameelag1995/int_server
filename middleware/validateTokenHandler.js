@@ -11,7 +11,7 @@ export const validateToken = async (req, res, next) => {
             const decoded = jwt.verify(token, "MySecret");
             const user = await User.findOne({
                 _id: decoded._id,
-                "tokens.token": token,
+                token: token,
             }).select("-password");
 
             if (!token || !user) {

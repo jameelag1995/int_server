@@ -45,6 +45,7 @@ export const registerUser = async (req, res, next) => {
 //@access public
 export const loginUser = async (req, res, next) => {
     try {
+        console.log(req.body);
         const { email, password } = req.body;
         if (!email || !password) {
             res.status(STATUS_CODES.VALIDATION_ERROR);
@@ -53,7 +54,7 @@ export const loginUser = async (req, res, next) => {
         const user = await User.findOne({ email });
         if (user && (await bcrypt.compare(password, user.password))) {
             const accessToken = await user.generateAccessToken();
-            res.status(STATUS_CODES.OK).json({ accessToken });
+            res.status(STATUS_CODES.OK).send({ accessToken });
         } else {
             res.status(STATUS_CODES.UNAUTHORIZED);
             throw new Error("Email or Password is not valid");
